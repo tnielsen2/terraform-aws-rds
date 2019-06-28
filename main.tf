@@ -14,7 +14,7 @@ module "final_snapshot_label" {
   name       = "${var.name}"
   stage      = "${var.stage}"
   delimiter  = "${var.delimiter}"
-  attributes = ["${compact(concat(var.attributes, list("final", "snapshot")))}"]
+  attributes = "${compact(concat(var.attributes, list("final", "snapshot")))}"
   tags       = "${var.tags}"
 }
 
@@ -106,10 +106,10 @@ resource "aws_security_group" "default" {
 }
 
 module "dns_host_name" {
-  source    = "git::https://github.com/cloudposse/terraform-aws-route53-cluster-hostname.git?ref=tags/0.2.5"
-  namespace = "${var.namespace}"
+  source    = "git::https://github.com/cloudposse/terraform-aws-route53-cluster-hostname.git?ref=master"
+  #namespace = "${var.namespace}"
   name      = "${var.host_name}"
-  stage     = "${var.stage}"
+  #stage     = "${var.stage}"
   zone_id   = "${var.dns_zone_id}"
   records   = "${aws_db_instance.default.*.address}"
   enabled   = "${(length(var.dns_zone_id) > 0 && var.enabled == "true") ? "true" : "false"}"
