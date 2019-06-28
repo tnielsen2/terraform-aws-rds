@@ -78,7 +78,7 @@ resource "aws_db_option_group" "default" {
 resource "aws_db_subnet_group" "default" {
   count      = "${var.enabled == "true" ? 1 : 0}"
   name       = "${module.label.id}"
-  subnet_ids = ["${var.subnet_ids}"]
+  subnet_ids = "${var.subnet_ids}"
   tags       = "${module.label.tags}"
 }
 
