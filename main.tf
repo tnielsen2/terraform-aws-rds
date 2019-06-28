@@ -1,5 +1,5 @@
 module "label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.3.5"
+  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=master"
   namespace  = "${var.namespace}"
   name       = "${var.name}"
   stage      = "${var.stage}"
@@ -9,7 +9,7 @@ module "label" {
 }
 
 module "final_snapshot_label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.3.5"
+  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=master"
   namespace  = "${var.namespace}"
   name       = "${var.name}"
   stage      = "${var.stage}"
@@ -31,7 +31,7 @@ resource "aws_db_instance" "default" {
   allocated_storage           = "${var.allocated_storage}"
   storage_encrypted           = "${var.storage_encrypted}"
   kms_key_id                  = "${var.kms_key_arn}"
-  vpc_security_group_ids      = ["${compact(concat(list(join("", aws_security_group.default.*.id)), var.associate_security_group_ids))}"]
+  vpc_security_group_ids      = "${compact(concat(list(join("", aws_security_group.default.*.id)), var.associate_security_group_ids))}"
   db_subnet_group_name        = "${join("", aws_db_subnet_group.default.*.name)}"
   parameter_group_name        = "${length(var.parameter_group_name) > 0 ? var.parameter_group_name : join("", aws_db_parameter_group.default.*.name)}"
   option_group_name           = "${length(var.option_group_name) > 0 ? var.option_group_name : join("", aws_db_option_group.default.*.name)}"
@@ -59,7 +59,7 @@ resource "aws_db_parameter_group" "default" {
   name      = "${module.label.id}"
   family    = "${var.db_parameter_group}"
   tags      = "${module.label.tags}"
-  parameter = "${var.db_parameter}"
+#  parameter = "${var.db_parameter}"
 }
 
 resource "aws_db_option_group" "default" {
@@ -68,7 +68,7 @@ resource "aws_db_option_group" "default" {
   engine_name          = "${var.engine}"
   major_engine_version = "${var.major_engine_version}"
   tags                 = "${module.label.tags}"
-  option               = "${var.db_options}"
+#  option               = "${var.db_options}"
 
   lifecycle {
     create_before_destroy = true
